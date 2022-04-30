@@ -3,14 +3,14 @@
 #include <map>
 #include <algorithm>
 #include <limits.h>
-
+#include <cstdint>
 struct host_address {
 	int address;
 	static constexpr unsigned short ipv4size = 4;
 	static_assert(sizeof address >= ipv4size, "Must be able to store IPv4 address");
 	bool operator==(const host_address& r) const noexcept
 	{
-		return address == r.address;
+		return reinterpret_cast<const std::int32_t&>(address) == reinterpret_cast<const std::int32_t&>(r.address);
 	}
 };
 std::ostream& operator<<(std::ostream& ostm, const host_address& r)
